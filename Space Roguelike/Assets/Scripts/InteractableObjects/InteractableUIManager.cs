@@ -1,41 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
-using System.Linq;
 using UnityEngine.UI;
-
+using TMPro;
 public class InteractableUIManager : MonoBehaviour
 {
-    InteractableObject interactableObject;
+    public InteractableObject interactableObject;
 
     PlayerInput playerInput;
 
     public Image SpinIcon;
-
-    float start;
-    float duration;
-
-    private void Awake()
+   
+    private void Start()
     {
-        interactableObject = GetComponentInParent<InteractableObject>();
-        
-        playerInput = GameManager.Instance.Player.GetComponent<PlayerInput>();
-
         SpinIcon.gameObject.SetActive(false);
 
+        playerInput = GameManager.Player.GetComponent<PlayerInput>();
+
+        
     }
     private void OnEnable()
     {
-        start = 0;
-        duration = 0;
-        playerInput.onControlsChanged += OnControlsChanged;
-        SetUIControlText();
+        if(playerInput)
+        {
+            playerInput.onControlsChanged += OnControlsChanged;
+            SetUIControlText();
+        }
+       
     }
     private void OnDisable()
     {
-        playerInput.onControlsChanged -= OnControlsChanged;
+        if (playerInput)
+        {
+            playerInput.onControlsChanged -= OnControlsChanged;
+        }
     }
 
     void OnControlsChanged(PlayerInput input)
@@ -45,35 +43,44 @@ public class InteractableUIManager : MonoBehaviour
 
     void SetUIControlText()
     {
-        TextMeshProUGUI InteractText = GetComponentInChildren<TextMeshProUGUI>();
+         TextMeshProUGUI InteractText = GetComponentInChildren<TextMeshProUGUI>();
 
         InputAction InteractAction = playerInput.currentActionMap.FindAction("InteractPress");
-        
-        InteractText.text = InteractAction.GetBindingDisplayString(InputBinding.MaskByGroup(playerInput.currentControlScheme));
+
+        InteractText.text = InteractAction.GetBindingDisplayString(InputBinding.MaskByGroup(playerInput.currentControlScheme)) + " To Interact";
     }
 
-    public void ShowHoldIndicator(float startTime,float holdDuration)
+    public void ShowHoldIndicator()
     {
-       SpinIcon.gameObject.SetActive(true);
-
-       start = startTime;
-       duration = holdDuration;
+        SpinIcon.gameObject.SetActive(true);
     }
 
     public void HideHoldIndicator()
     {
         SpinIcon.gameObject.SetActive(false);
+    }
 
-        start = 0;
-        duration = 0;
+    public void ShowInteractUI()
+    {
+        if (interactableObject.hasHighlight && interactableObject.Highlight)
+        {
+            interactableObject.Highlight.enabled = true;
+        }
+    }
+    public void HideInteractUI()
+    {
+        if (interactableObject.hasHighlight && interactableObject.Highlight)
+        {
+            interactableObject.Highlight.enabled = false;
+        }
+
     }
 
     private void Update()
     {
-        if (SpinIcon.isActiveAndEnabled)
+        if (SpinIcon.gameObject.activeInHierarchy)
         {
-            SpinIcon.fillAmount = Time.time - start / duration ;
-            Debug.Log(Time.time - start / duration);
+            SpinIcon.fillAmount = Time.time - interactableObject.HoldStartTime / interactableObject.HoldDuration;
         }
     }
 }

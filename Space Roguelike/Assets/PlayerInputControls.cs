@@ -24,7 +24,7 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputControls"",
     ""maps"": [
         {
-            ""name"": ""Movement"",
+            ""name"": ""Gameplay"",
             ""id"": ""ade4819f-488f-49a6-b9ee-959ac0ad9bed"",
             ""actions"": [
                 {
@@ -52,6 +52,24 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwapWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef57ff37-fbe3-49ab-b836-023322df95cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""c17c596d-2dcd-4a80-96d6-611b278a9bc1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -165,43 +183,76 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
                     ""action"": ""InteractHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c609b62b-080a-4053-be0e-e42dda0a9873"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""SwapWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f553e4f3-4f05-4ab4-96f5-3b8c82b4f9ac"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12d9133e-1d75-46ad-9836-2af71152d708"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""Actions"",
+            ""name"": ""UI"",
             ""id"": ""c24b740d-7ff0-41e6-b92f-88c3cbb37128"",
             ""actions"": [
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""Back"",
                     ""type"": ""Button"",
-                    ""id"": ""02000c6d-befe-44f1-b9de-7d47b58dfb7a"",
+                    ""id"": ""8e32510b-4297-4790-8640-53f7876470bd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""b50002b0-d7c9-4bac-814e-5c857889496a"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""id"": ""06245cef-ee17-4f3e-bd28-a5e8f8f034c0"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Interact"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0078f528-6e7f-4e5a-8713-db359b6546f4"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""id"": ""7960fd6a-70ab-4777-84b5-4e9de19036b1"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
-                    ""action"": ""Interact"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -238,14 +289,16 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Movement
-        m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-        m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
-        m_Movement_InteractPress = m_Movement.FindAction("InteractPress", throwIfNotFound: true);
-        m_Movement_InteractHold = m_Movement.FindAction("InteractHold", throwIfNotFound: true);
-        // Actions
-        m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
-        m_Actions_Interact = m_Actions.FindAction("Interact", throwIfNotFound: true);
+        // Gameplay
+        m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
+        m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
+        m_Gameplay_InteractPress = m_Gameplay.FindAction("InteractPress", throwIfNotFound: true);
+        m_Gameplay_InteractHold = m_Gameplay.FindAction("InteractHold", throwIfNotFound: true);
+        m_Gameplay_SwapWeapon = m_Gameplay.FindAction("SwapWeapon", throwIfNotFound: true);
+        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -304,28 +357,32 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Movement
-    private readonly InputActionMap m_Movement;
-    private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
-    private readonly InputAction m_Movement_Move;
-    private readonly InputAction m_Movement_InteractPress;
-    private readonly InputAction m_Movement_InteractHold;
-    public struct MovementActions
+    // Gameplay
+    private readonly InputActionMap m_Gameplay;
+    private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
+    private readonly InputAction m_Gameplay_Move;
+    private readonly InputAction m_Gameplay_InteractPress;
+    private readonly InputAction m_Gameplay_InteractHold;
+    private readonly InputAction m_Gameplay_SwapWeapon;
+    private readonly InputAction m_Gameplay_Attack;
+    public struct GameplayActions
     {
         private @PlayerInputControls m_Wrapper;
-        public MovementActions(@PlayerInputControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Movement_Move;
-        public InputAction @InteractPress => m_Wrapper.m_Movement_InteractPress;
-        public InputAction @InteractHold => m_Wrapper.m_Movement_InteractHold;
-        public InputActionMap Get() { return m_Wrapper.m_Movement; }
+        public GameplayActions(@PlayerInputControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Gameplay_Move;
+        public InputAction @InteractPress => m_Wrapper.m_Gameplay_InteractPress;
+        public InputAction @InteractHold => m_Wrapper.m_Gameplay_InteractHold;
+        public InputAction @SwapWeapon => m_Wrapper.m_Gameplay_SwapWeapon;
+        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
+        public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MovementActions set) { return set.Get(); }
-        public void AddCallbacks(IMovementActions instance)
+        public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
+        public void AddCallbacks(IGameplayActions instance)
         {
-            if (instance == null || m_Wrapper.m_MovementActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_MovementActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -335,9 +392,15 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
             @InteractHold.started += instance.OnInteractHold;
             @InteractHold.performed += instance.OnInteractHold;
             @InteractHold.canceled += instance.OnInteractHold;
+            @SwapWeapon.started += instance.OnSwapWeapon;
+            @SwapWeapon.performed += instance.OnSwapWeapon;
+            @SwapWeapon.canceled += instance.OnSwapWeapon;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
         }
 
-        private void UnregisterCallbacks(IMovementActions instance)
+        private void UnregisterCallbacks(IGameplayActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -348,69 +411,75 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
             @InteractHold.started -= instance.OnInteractHold;
             @InteractHold.performed -= instance.OnInteractHold;
             @InteractHold.canceled -= instance.OnInteractHold;
+            @SwapWeapon.started -= instance.OnSwapWeapon;
+            @SwapWeapon.performed -= instance.OnSwapWeapon;
+            @SwapWeapon.canceled -= instance.OnSwapWeapon;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
         }
 
-        public void RemoveCallbacks(IMovementActions instance)
+        public void RemoveCallbacks(IGameplayActions instance)
         {
-            if (m_Wrapper.m_MovementActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_GameplayActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IMovementActions instance)
+        public void SetCallbacks(IGameplayActions instance)
         {
-            foreach (var item in m_Wrapper.m_MovementActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_GameplayActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_MovementActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_GameplayActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public MovementActions @Movement => new MovementActions(this);
+    public GameplayActions @Gameplay => new GameplayActions(this);
 
-    // Actions
-    private readonly InputActionMap m_Actions;
-    private List<IActionsActions> m_ActionsActionsCallbackInterfaces = new List<IActionsActions>();
-    private readonly InputAction m_Actions_Interact;
-    public struct ActionsActions
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_Back;
+    public struct UIActions
     {
         private @PlayerInputControls m_Wrapper;
-        public ActionsActions(@PlayerInputControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Interact => m_Wrapper.m_Actions_Interact;
-        public InputActionMap Get() { return m_Wrapper.m_Actions; }
+        public UIActions(@PlayerInputControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Back => m_Wrapper.m_UI_Back;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
-        public void AddCallbacks(IActionsActions instance)
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
         {
-            if (instance == null || m_Wrapper.m_ActionsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ActionsActionsCallbackInterfaces.Add(instance);
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
         }
 
-        private void UnregisterCallbacks(IActionsActions instance)
+        private void UnregisterCallbacks(IUIActions instance)
         {
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
         }
 
-        public void RemoveCallbacks(IActionsActions instance)
+        public void RemoveCallbacks(IUIActions instance)
         {
-            if (m_Wrapper.m_ActionsActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IActionsActions instance)
+        public void SetCallbacks(IUIActions instance)
         {
-            foreach (var item in m_Wrapper.m_ActionsActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_ActionsActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public ActionsActions @Actions => new ActionsActions(this);
+    public UIActions @UI => new UIActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -429,14 +498,16 @@ public partial class @PlayerInputControls: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_ControllerSchemeIndex];
         }
     }
-    public interface IMovementActions
+    public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteractPress(InputAction.CallbackContext context);
         void OnInteractHold(InputAction.CallbackContext context);
+        void OnSwapWeapon(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
-    public interface IActionsActions
+    public interface IUIActions
     {
-        void OnInteract(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
 }

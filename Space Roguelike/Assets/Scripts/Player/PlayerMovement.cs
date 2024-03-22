@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
@@ -13,24 +10,26 @@ public class PlayerMovement : MonoBehaviour
 
     private Quaternion RotationDirectionQuaternion;
 
-    public enum MoveStates { None,Idle,Walking};
+    public enum MoveStates { None, Idle, Walking };
     public MoveStates MoveState;
 
     Vector2 InputDirection;
 
     public GameObject Mesh;
 
+
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
 
-       
+
     }
 
-    public void Move (Vector2 value)
+    public void Move(Vector2 value)
     {
         InputDirection = value;
-       
+
         RotationDirection();
     }
 
@@ -39,7 +38,8 @@ public class PlayerMovement : MonoBehaviour
     {
         MoveCharacterController(InputDirection, MoveSpeed);
 
-        if(InputDirection != Vector2.zero)
+
+        if (InputDirection != Vector2.zero)
         {
             MoveState = MoveStates.Walking;
         }
@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         {
             MoveState = MoveStates.Idle;
         }
-       
+
     }
 
     void RotationDirection()
@@ -70,13 +70,15 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movementRight = transform.right * InputDirection.x;
 
         Vector3 movement = movementForward + movementRight;
-
-        movement.Normalize();
-
-
-        characterController.SimpleMove(movement * speed );
-
        
+
+      
+        movement.Normalize();
+       
+        characterController.SimpleMove(movement * speed);
+
+        
+
         Mesh.transform.rotation = Quaternion.Lerp(Mesh.transform.rotation, RotationDirectionQuaternion, Time.deltaTime * RotationSpeed);
     }
 }

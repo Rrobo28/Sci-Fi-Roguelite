@@ -4,33 +4,50 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.InputSystem.Interactions;
 public class InteractableObject : MonoBehaviour
 {
-    public Canvas InteractionPopup;
+    [Header ("Interaction")]
+    public InteractionType interactionType;
+    public bool hasHighlight = false;
 
-    public TextMeshProUGUI textMeshProUGUI;
+    [HideInInspector]
+    public float HoldDuration = 0;
+    [HideInInspector]
+    public float HoldStartTime = 0;
+    
 
+    [Header ("UI")]
+    public InteractableUIManager interactableUIManager;
+    public bool MenuInteraction = true;
+    public bool isInteractable = true;
     private bool PlayerIsInRange;
 
-    public PlayerInput playerInput;
-
+    [HideInInspector]
+    public Outline Highlight;
     public enum InteractionType {OnCollision,Press,Hold}
 
-    public InteractionType interactionType;
-
-    private void Awake()
+    private void Start()
     {
-        //playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>().actions;
+        if(GetComponent<Outline>() != null)
+        {
+            Highlight = GetComponent<Outline>();
+        }
+        Debug.Log("Running");
+        interactableUIManager.gameObject.SetActive(false);
+
+        Setup();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player") && isInteractable)
         {
 
             if(interactionType != InteractionType.OnCollision)
             {
-                ShowInteractUI();
+                interactableUIManager.gameObject.SetActive(true);
+                interactableUIManager.ShowInteractUI();
             }
             else
             {
@@ -42,11 +59,13 @@ public class InteractableObject : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && isInteractable)
         {
             if (interactionType != InteractionType.OnCollision)
             {
-                HideInteractUI();
+                interactableUIManager.HideInteractUI();
+                interactableUIManager.gameObject.SetActive(false);
+                
             }
             else
             {
@@ -56,16 +75,57 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    void ShowInteractUI()
+    public virtual void Back()
     {
-        InteractionPopup.gameObject.SetActive(true);
-    }
-    void HideInteractUI()
-    {
-        InteractionPopup.gameObject.SetActive(false);
+
     }
 
+    public void InteractStarted(InputAction.CallbackContext context)
+    {
+        if (interactionType == InteractionType.Hold)
+        {
+            HoldInteraction holdInteraction = (HoldInteraction)context.interaction;
+
+            HoldDuration = holdInteraction.duration;
+            HoldStartTime = Time.time;
+
+            interactableUIManager.ShowHoldIndicator();
+
+            Debug.Log("SHOW HOLD INDICATOR");
+        }
+    }
+    public void InteractionCancelled(InputAction.CallbackContext context)
+    {
+        HoldStartTime = 0;
+        interactableUIManager.HideHoldIndicator();
+    }
+
+    public void InteractFinished()
+    {
+        if(interactionType == InteractionType.Press) 
+        {
+            Interact();
+        }
+        else if(interactionType == InteractionType.Hold) 
+        {
+
+            Debug.Log("FINISH INTERACTION :" + "TIME:"+Time.time + " START: "+ HoldStartTime + " DURATION: "+ HoldDuration);
+            if (HoldStartTime != 0 )
+            {
+                interactableUIManager.HideHoldIndicator();
+                Interact();
+                HoldStartTime = 0;
+            }
+        }
+    }
+
+   
+
     public virtual void Interact()
+    {
+
+    }
+    public virtual void Setup()
     {
 
     }

@@ -8,61 +8,58 @@ using UnityEngine.InputSystem.Interactions;
 
 public class PlayerInteract : MonoBehaviour
 {
-    GameObject ObjectToInteractWith;
+    InteractableObject ObjectToInteractWith;
+   
 
-    public float HoldDuration = 0;
+    private Player player;
 
-    public float HoldStartTime = 0;
-
-    float HoldTime;
-
+    private void Awake()
+    {
+        player = GetComponent<Player>();
+    }
 
     public void InteractionCanceled(InputAction.CallbackContext context)
     {
-        HoldStartTime = 0;
-        HoldDuration = 0;
-
-        ObjectToInteractWith.GetComponentInChildren<InteractableUIManager>().HideHoldIndicator();
+        if (ObjectToInteractWith != null )
+        {
+            if (context.interaction is HoldInteraction)
+            {
+                ObjectToInteractWith.InteractionCancelled(context);
+                Debug.Log("CANCELED");
+            }
+        }
+       
+        
     }
     public void InteractStarted(InputAction.CallbackContext context)
     {
-       if (ObjectToInteractWith == null ||ObjectToInteractWith.GetComponent<InteractableObject>().interactionType != InteractableObject.InteractionType.Hold) 
+       if (ObjectToInteractWith != null &&ObjectToInteractWith.interactionType == InteractableObject.InteractionType.Hold && ObjectToInteractWith.isInteractable) 
        {
-           return;
-       }
-       else if(context.interaction is HoldInteraction)
-       {
-            HoldInteraction holdInteraction = (HoldInteraction)context.interaction;
-
-            HoldDuration = holdInteraction.duration;
-            HoldStartTime = Time.time;
-
-            ObjectToInteractWith.GetComponentInChildren<InteractableUIManager>().ShowHoldIndicator(HoldStartTime,HoldDuration);
-
-
+            if (context.interaction is HoldInteraction)
+            {
+                ObjectToInteractWith.InteractStarted(context);
+                Debug.Log("STARTED");
+            }
         }
+      
 
     }
     public void InteractFinished()
     {
-        if(ObjectToInteractWith == null)
+        if(ObjectToInteractWith != null && ObjectToInteractWith.isInteractable)
         {
-            return;
+            ObjectToInteractWith.InteractFinished();
+            Debug.Log("FINISHED");
         }
+       
+    }
 
-        else if (ObjectToInteractWith.GetComponent<InteractableObject>().interactionType == InteractableObject.InteractionType.Press)
+    public void Back()
+    {
+        if (ObjectToInteractWith != null  && ObjectToInteractWith.MenuInteraction)
         {
-            Interact();
-        }
-        else if (ObjectToInteractWith.GetComponent<InteractableObject>().interactionType == InteractableObject.InteractionType.Hold)
-        {
-            if(HoldStartTime !=0 && (Time.time > HoldStartTime + HoldDuration)) 
-            {
-                Interact();
-                HoldStartTime = 0;
-                HoldDuration = 0;
-                ObjectToInteractWith.GetComponentInChildren<InteractableUIManager>().HideHoldIndicator();
-            }
+            ObjectToInteractWith.Back();
+            
         }
     }
 
@@ -71,29 +68,21 @@ public class PlayerInteract : MonoBehaviour
     {
         if(other.CompareTag("InteractableObject"))
         {
-            HoldStartTime = 0;
-            HoldDuration = 0;
-            ObjectToInteractWith = other.gameObject;
-            Debug.Log("Pressed");
+            ObjectToInteractWith = other.gameObject.GetComponent<InteractableObject>();
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("InteractableObject"))
         {
-            HoldStartTime = 0;
-            HoldDuration = 0;
             ObjectToInteractWith = null;
         }
     }
 
-    void Interact()
+    public void PickUpWeapon(Weapon weaponToAttach)
     {
-        if (ObjectToInteractWith)
-        {
-            ObjectToInteractWith.GetComponent<InteractableObject>().Interact();
-        }
-       
+        player.playerWeaponHandler.AttachWeaponToHand(weaponToAttach);
+
     }
 
 

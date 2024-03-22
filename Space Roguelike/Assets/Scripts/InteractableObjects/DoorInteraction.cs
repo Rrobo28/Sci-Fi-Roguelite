@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 public class DoorInteraction : InteractableObject
 {
+    [Header("Door Reference")]
     public GameObject Door;
 
     bool IsOpen = false;
@@ -14,7 +15,7 @@ public class DoorInteraction : InteractableObject
     Vector3 DoorShutPosition;
     public float DoorOpenSpeed = 10;
 
-    private void Start()
+    public override void Setup()
     {
         DoorShutPosition = Door.transform.position;
         DoorOpenPosition = new Vector3(Door.transform.position.x , Door.transform.position.y - DoorOpenX, Door.transform.position.z);
@@ -22,10 +23,10 @@ public class DoorInteraction : InteractableObject
 
     public override void Interact()
     {
+         if (!isInteractable) return;
+
         base.Interact();
-
         ToggleDoor();
-
     }
 
     private void Update()

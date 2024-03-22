@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
-
-    public GameObject Player;
+    public static GameObject Player;
 
     private void Awake()
     {
-        Instance = this;
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 
 }
